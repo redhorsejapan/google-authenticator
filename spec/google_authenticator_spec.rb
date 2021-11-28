@@ -27,10 +27,10 @@ describe GoogleAuthenticatorRails do
     end
 
     specify { GoogleAuthenticatorRails::time_based_password(secret).should == code }
-    specify { GoogleAuthenticatorRails::valid?(code, secret).should be true }
+    specify { GoogleAuthenticatorRails::valid?(code, secret).should be_true }
 
-    specify { GoogleAuthenticatorRails::valid?(code * 2, secret).should be false }
-    specify { GoogleAuthenticatorRails::valid?(code, secret * 2).should be false }
+    specify { GoogleAuthenticatorRails::valid?(code * 2, secret).should be_false }
+    specify { GoogleAuthenticatorRails::valid?(code, secret * 2).should be_false }
 
     it 'can create a secret' do
       GoogleAuthenticatorRails::generate_secret.should == secret
@@ -51,28 +51,28 @@ describe GoogleAuthenticatorRails do
   
         context '6 seconds of drift' do
           let(:time)  { original_time + 36.seconds }
-          it          { should be true }
+          it          { should be_true }
         end
   
         context '30 seconds of drift' do
           let(:time)  { original_time + 61.seconds }
-          it          { should be false }
+          it          { should be_false }
         end
       end
   
       context 'code validation' do
         subject { user.google_authentic?(code) }
   
-        it { should be true }
+        it { should be_true }
   
         context 'within 5 seconds of drift' do
           let(:time)  { original_time + 34.seconds }
-          it          { should be true }
+          it          { should be_true }
         end
   
         context '6 seconds of drift' do
           let(:time)  { original_time + 36.seconds }
-          it          { should be false }
+          it          { should be_false }
         end
       end
   
